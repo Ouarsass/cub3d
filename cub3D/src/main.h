@@ -1,3 +1,6 @@
+#ifndef MAIN_H
+#define MAIN_H
+
 #include <stdio.h>
 #include <mlx.h>
 # include <fcntl.h>
@@ -12,6 +15,7 @@
 #define TWO_PI 6.28318530718
 #define FOV_ANGLE (60 * (PI / 180))
 #define MINIMAP_SCALE_FACTOR 0.3
+
 
 typedef struct s_data
 {
@@ -32,13 +36,12 @@ typedef struct s_map
     int num_cols;
     int window_width;
     int window_height;
-
 } t_map;
 
 typedef struct s_player
 {
-    float x;
-    float y;
+    int x;
+    int y;
     float width;
     float height;
     int turnDirection;
@@ -58,7 +61,7 @@ typedef struct s_game
 
 //free function
 void    exit_game(t_data data);
-int     ft_cross(t_data *data);
+int     ft_cross(t_data data);
 void    free_mlx(t_data	data);
 void    display_error(char *msg);
 void    destroyWindow(void *mlx, void *window);
@@ -78,6 +81,7 @@ void    renderMap(t_data data, t_map map);
 void    renderPlayer(t_data data, t_player *player);
 void    update (t_player *player, t_data data, t_game *game);
 int     direction(int keyboard, t_game *game);
+int     isTherWall(float x, float y, t_game *game);
 
 //move player
 void    moveplayer(t_player *player, t_data data);
@@ -87,3 +91,7 @@ void move_up(t_game *game);
 void move_down(t_game *game);
 void move_rotation_left(t_game *game);
 void move_rotation_right(t_game *game);
+
+//libftfunction
+
+#endif

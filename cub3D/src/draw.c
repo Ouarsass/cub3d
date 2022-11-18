@@ -1,15 +1,15 @@
 #include "main.h"
 
-void draw_mini_map(t_data data, int cpm1, int cmp2, int tileColor)
+void draw_mini_map(t_data data, int cmp1, int cmp2, int tileColor)
 {
     int i;
     int j;
 
-    i = cpm1;
-    while (i < cpm1 + 40)
+    i = cmp1;
+    while (i < cmp1 + 60)
     {
         j = cmp2;
-        while (j < cmp2 + 40)
+        while (j < cmp2 + 60)
         {
             my_mlx_pixel_put(&data, i, j, tileColor);
             j++;
@@ -67,7 +67,7 @@ void draw_player(t_data data, t_player *player)
         j = player->y;
         while (j < player->y + 1)
         {
-            my_mlx_pixel_put(&data, i, j, 0x000000);
+            my_mlx_pixel_put(&data, i, j, 0x00000);
             j++;
         }
         i++;

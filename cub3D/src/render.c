@@ -10,12 +10,15 @@ void setup(t_player *player, t_map map)
     player->turnDirection = 0;
     player->walkDirection = 0;
     player->rotationAngle = PI / 2;
-    player->walkSpeed = 10;
+    player->walkSpeed = 30;
     player->turnSpeed = 45 * (PI / 180);
 }
 
 void renderMap(t_data data, t_map map)
 {
+    int i;
+    int j;
+
     const int my_map[13][20] = {
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ,1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -31,8 +34,7 @@ void renderMap(t_data data, t_map map)
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
     {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
-    int i;
-    int j;
+
 
     for (i = 0; i < map.num_rows; i++)
     {
@@ -44,7 +46,7 @@ void renderMap(t_data data, t_map map)
                 tileColor = 0x000000;
             else
                 tileColor = 0xFFFFFF;
-            draw_mini_map(data, j * 40, i * 40, tileColor);
+            draw_mini_map(data, j * map.title_size, i * map.title_size , tileColor);
         }
     }
 }

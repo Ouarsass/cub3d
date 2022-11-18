@@ -23,11 +23,11 @@ void display_error(char *msg)
 	exit(EXIT_FAILURE);
 }
 
-// int	ft_cross(t_data *data)
-// {
-// 	free_mlx(data);
-// 	return (0);
-// }
+int	ft_cross(t_data data)
+{
+	free_mlx(data);
+	return (0);
+}
 
 void destroyWindow(void *mlx, void *window)
 {
