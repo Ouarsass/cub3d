@@ -1,7 +1,10 @@
 CC = gcc
 CFLAGS =
 NAME = cub
-SRC = src/free_destroy.c \
+SRC = src/ft_strdup.c src/ft_strjoin.c src/ft_split.c \
+	src/free_destroy.c \
+	src/checkWall.c \
+	src/read_file.c \
 	src/move.c \
 	src/render.c \
 	src/draw.c \

@@ -36,12 +36,15 @@ typedef struct s_map
     int num_cols;
     int window_width;
     int window_height;
+    int wall;
+    int player;
+    int **my_map;
 } t_map;
 
 typedef struct s_player
 {
-    int x;
-    int y;
+    float x;
+    float y;
     float width;
     float height;
     int turnDirection;
@@ -69,29 +72,47 @@ void    destroyWindow(void *mlx, void *window);
 //draw
 void     CreateWindow(t_data *mlx, t_map map);
 void    draw_mini_map(t_data data, int cpm1, int cmp2, int tileColor);
-void    draw_player(t_data data, t_player *player);
+void    draw_player(t_data data, t_map map, t_player *player);
 void    draw_line(t_data data, t_player *player);
 
-void    setup_map(t_map *map);
+void    setup_map(t_map *map, char *table);
 void    setup(t_player *player, t_map map);
 void    processInput(t_data data);
 void    render(t_data data, t_player *player, t_map map);
 void	my_mlx_pixel_put(t_data *data, int x, int y, int color);
-void    renderMap(t_data data, t_map map);
-void    renderPlayer(t_data data, t_player *player);
+void    renderMap(t_data data, t_map map, t_player *player);
+void    renderPlayer(t_data data, t_map map, t_player *player);
 void    update (t_player *player, t_data data, t_game *game);
 int     direction(int keyboard, t_game *game);
-int     isTherWall(float x, float y, t_game *game);
+int     isTherWallRight(t_game *game);
+int     isTherWallLeft(t_game *game);
+int     isTherWallDown(t_game *game);
+int     isTherWallUp(t_game *game);
 
 //move player
 void    moveplayer(t_player *player, t_data data);
-void move_right(t_game *game);
-void move_left(t_game *game);
-void move_up(t_game *game);
-void move_down(t_game *game);
-void move_rotation_left(t_game *game);
-void move_rotation_right(t_game *game);
+void    move_right(t_game *game);
+void    move_left(t_game *game);
+void    move_up(t_game *game);
+void    move_down(t_game *game);
+void    move_rotation_left(t_game *game);
+void    move_rotation_right(t_game *game);
+void    playerPosition(t_player *player, t_map map);
+
+//map
+char	*read_file(int fd);
+char	*red_line(int fd);
+int     row_length(char **table);
+void takeSize(char **table , t_map *map);
 
 //libftfunction
+char	*ft_strdup(const char	*s1);
+int     ft_strlen(const char	*str);
+char	*ft_strjoin(char	*s1, char	*s2);
+size_t	ft_strlcpy(char	*dst, const char	*src, size_t	size);
+static char	*this(const char *s, char c);
+static int	count_words(const char	*s, char c);
+char	**free_t(unsigned int i, char **tab);
+char	**ft_split(const char *s, char c);
 
 #endif

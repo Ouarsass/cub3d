@@ -55,7 +55,29 @@ void draw_line(t_data data, t_player *player)
     }
 }
 
-void draw_player(t_data data, t_player *player)
+void playerPosition(t_player *player, t_map map)
+{
+    int i;
+    int j;
+
+    i = 0;
+    while (i < map.num_rows)
+    {
+        j = 0;
+        while (j < map.num_cols)
+        {
+            if (map.my_map[i][j] == 2)
+            {
+                player->x = j * map.title_size;
+                player->y = i * map.title_size;
+            }
+            j++;
+        }
+        i++;
+    }
+}
+
+void draw_player(t_data data, t_map map, t_player *player)
 {
     int i;
     int j;
