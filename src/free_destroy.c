@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 void	free_mlx(t_data	data)
 {

@@ -1,6 +1,6 @@
 
-#include "main.h"
-#include "libft/libft.h"
+#include "../main.h"
+#include "../libft/libft.h"
 
 int	check_extention(char *av)
 {

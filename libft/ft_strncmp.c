@@ -6,11 +6,11 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/22 21:04:17 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/22 21:11:20 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/11/23 14:34:18 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft"
+#include "libft.h"
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {

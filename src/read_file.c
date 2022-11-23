@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 char	*red_line(int fd)
 {

@@ -8,6 +8,7 @@
 #include <sys/time.h>
 #include <math.h>
 #include <stdlib.h>
+# include "libft/libft.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -106,13 +107,17 @@ int     row_length(char **table);
 void takeSize(char **table , t_map *map);
 
 //libftfunction
-char	*ft_strdup(const char	*s1);
-int     ft_strlen(const char	*str);
-char	*ft_strjoin(char	*s1, char	*s2);
-size_t	ft_strlcpy(char	*dst, const char	*src, size_t	size);
-static char	*this(const char *s, char c);
-static int	count_words(const char	*s, char c);
-char	**free_t(unsigned int i, char **tab);
-char	**ft_split(const char *s, char c);
+// char	*ft_strdup(const char	*s1);
+// int     ft_strlen(char	*str);
+// char	*ft_strjoin(char	*s1, char	*s2);
+// size_t	ft_strlcpy(char	*dst, const char	*src, size_t	size);
+// static char	*this(const char *s, char c);
+// static int	count_words(const char	*s, char c);
+// char	**free_t(unsigned int i, char **tab);
+// char	**ft_split(const char *s, char c);
+
+//parsing
+int	check_extention(char *av);
+
 
 #endif

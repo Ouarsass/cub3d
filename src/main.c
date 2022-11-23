@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 int row_length(char **table)
 {
@@ -133,10 +133,13 @@ int main(int argc, char **av)
     t_map       map;
     char        *table;
 
-
-    fd = open(av[1], O_RDONLY);
+	if (argc != 2)
+		display_error("Error\nCheking the arguments");
     if (fd < 0)
         display_error("Error in File Descriptor\n");
+	if (!check_extention(av[1]))
+		display_error("Error\nExtention");
+	fd = open(av[1], O_RDONLY);
     table = read_file(fd);
     if (!table)
         display_error("Error in read File\n");

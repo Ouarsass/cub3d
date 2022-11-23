@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 int isTherWallRight(t_game *game)
 {
