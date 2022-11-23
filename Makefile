@@ -16,6 +16,8 @@ SRC = 	src/free_destroy.c \
 		libft/ft_strdup.c\
 		libft/ft_strjoin.c \
 		parsing/check_map.c \
+		get_next_line/get_next_line_utils.c \
+	  	get_next_line/get_next_line.c \
 
 
 

@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdlib.h>
 # include "libft/libft.h"
+#include "get_next_line/get_next_line.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -17,6 +18,11 @@
 #define FOV_ANGLE (60 * (PI / 180))
 #define MINIMAP_SCALE_FACTOR 0.3
 
+typedef	struct s_pars
+{
+	char	**map;
+	int		len;
+}			t_pars;
 
 typedef struct s_data
 {
@@ -118,6 +124,6 @@ void takeSize(char **table , t_map *map);
 
 //parsing
 int	check_extention(char *av);
-
+int	ft_parsing(t_pars *pars, char **av);
 
 #endif
