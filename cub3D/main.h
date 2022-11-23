@@ -3,11 +3,13 @@
 
 #include <stdio.h>
 #include <mlx.h>
-# include <fcntl.h>
+#include <fcntl.h>
 #include <unistd.h>
 #include <sys/time.h>
 #include <math.h>
 #include <stdlib.h>
+# include "libft/libft.h"
+#include "get_next_line/get_next_line.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -16,6 +18,11 @@
 #define FOV_ANGLE (60 * (PI / 180))
 #define MINIMAP_SCALE_FACTOR 0.3
 
+typedef	struct s_pars
+{
+	char	**map;
+	int		len;
+}			t_pars;
 
 typedef struct s_data
 {
@@ -106,13 +113,17 @@ int     row_length(char **table);
 void takeSize(char **table , t_map *map);
 
 //libftfunction
-char	*ft_strdup(const char	*s1);
-int     ft_strlen(const char	*str);
-char	*ft_strjoin(char	*s1, char	*s2);
-size_t	ft_strlcpy(char	*dst, const char	*src, size_t	size);
-static char	*this(const char *s, char c);
-static int	count_words(const char	*s, char c);
-char	**free_t(unsigned int i, char **tab);
-char	**ft_split(const char *s, char c);
+// char	*ft_strdup(const char	*s1);
+// int     ft_strlen(char	*str);
+// char	*ft_strjoin(char	*s1, char	*s2);
+// size_t	ft_strlcpy(char	*dst, const char	*src, size_t	size);
+// static char	*this(const char *s, char c);
+// static int	count_words(const char	*s, char c);
+// char	**free_t(unsigned int i, char **tab);
+// char	**ft_split(const char *s, char c);
+
+//parsing
+int	check_extention(char *av);
+int	ft_parsing(t_pars *pars, char **av);
 
 #endif

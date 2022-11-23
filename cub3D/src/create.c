@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 void CreateWindow(t_data *mlx, t_map map)
 {

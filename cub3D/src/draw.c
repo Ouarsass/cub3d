@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 void draw_mini_map(t_data data, int cmp1, int cmp2, int tileColor)
 {

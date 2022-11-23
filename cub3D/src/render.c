@@ -1,4 +1,4 @@
-#include "main.h"
+#include "../main.h"
 
 void setup(t_player *player, t_map map)
 {
