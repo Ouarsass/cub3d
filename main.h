@@ -9,7 +9,6 @@
 #include <math.h>
 #include <stdlib.h>
 # include "libft/libft.h"
-#include "get_next_line/get_next_line.h"
 
 #define TRUE 1
 #define FALSE 0
@@ -22,6 +21,10 @@ typedef	struct s_pars
 {
 	char	**map;
 	int		len;
+    char	*NO;
+    char	*SO;
+    char	*WE;
+    char	*EA;
 }			t_pars;
 
 typedef struct s_data
@@ -50,16 +53,16 @@ typedef struct s_map
 
 typedef struct s_player
 {
-    float x;
-    float y;
-    float width;
-    float height;
-    int turnDirection;
-    int walkDirection;
-    float rotationAngle;
-    float walkSpeed;
-    float end_line;
-    float turnSpeed;
+    float	x;
+    float	y;
+    float	width;
+    float	height;
+    int		turnDirection;
+    int		walkDirection;
+    float	rotationAngle;
+    float	walkSpeed;
+    float	end_line;
+    float	turnSpeed;
 } t_player;
 
 typedef struct s_game
@@ -125,5 +128,7 @@ void takeSize(char **table , t_map *map);
 //parsing
 int	check_extention(char *av);
 int	ft_parsing(t_pars *pars, char **av);
+char	**ft_spl(char *str, char *spl);
+
 
 #endif

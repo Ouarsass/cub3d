@@ -10,14 +10,16 @@ SRC = 	src/free_destroy.c \
 		src/draw.c \
 		src/create.c \
 		src/main.c \
-		libft/ft_strlen.c \
-		libft/ft_strncmp.c \
 		libft/ft_split.c \
+		libft/ft_strchr.c \
 		libft/ft_strdup.c\
 		libft/ft_strjoin.c \
+		libft/ft_strlen.c \
+		libft/ft_strncmp.c \
+		libft/ft_strtrim.c \
+		libft/ft_strcmp.c \
 		parsing/check_map.c \
-		get_next_line/get_next_line_utils.c \
-	  	get_next_line/get_next_line.c \
+		#parsing/ft_spl.c \
 
 
 

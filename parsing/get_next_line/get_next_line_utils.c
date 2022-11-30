@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 02:49:45 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/23 18:54:34 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:32:58 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ size_t	ft_strleen(char *s)
 	return (i);
 }
 
-char	*ft_strchr(char *s, int c)
+char	*ft_strchr_my(char *s, int c)
 {
 	unsigned char	*t;
 
@@ -40,7 +40,7 @@ char	*ft_strchr(char *s, int c)
 	return (0);
 }
 
-char	*ft_strjoine(char *s1, char *s2)
+char	*ft_strjoineb(char *s1, char *s2)
 {
 	char	*result;
 	size_t	l1;

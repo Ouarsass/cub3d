@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 02:58:03 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/23 18:54:51 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:33:11 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,13 +18,13 @@ char	*ft_lecture(int fd, char *buffers)
 	int		byte;
 
 	byte = 1;
-	while (!ft_strchr(buffers, '\n') && byte)
+	while (!ft_strchr_my(buffers, '\n') && byte)
 	{
 		byte = read(fd, calu, BUFFER_SIZE);
 		if (byte == -1)
 			return (0);
 		calu[byte] = '\0';
-		buffers = ft_strjoine(buffers, calu);
+		buffers = ft_strjoineb(buffers, calu);
 	}
 	return (buffers);
 }

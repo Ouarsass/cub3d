@@ -28,7 +28,7 @@ int isTherWallDown(t_game *game)
 
 int isTherWallUp(t_game *game)
 {
-    if (game->player.x <= game->map.title_size  \
+    if (game->player.x <= game->map.title_size \
     || game->player.y <= game->map.title_size)
         return TRUE;
     return FALSE;

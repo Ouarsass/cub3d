@@ -6,7 +6,7 @@
 #    By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 23:09:21 by mouarsas          #+#    #+#              #
-#    Updated: 2022/11/23 15:44:31 by mouarsas         ###   ########.fr        #
+#    Updated: 2022/11/28 19:26:21 by mouarsas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,6 +20,9 @@ SRC =	ft_strncmp.c\
 		ft_split.c\
 		ft_strlen.c\
 		ft_strjoin.c \
+		ft_strtrim.c\
+		ft_strchr.c\
+		ft_strcmp.c\
 		# ft_tolower.c\
 		ft_toupper.c\
 		ft_atoi.c \
@@ -45,14 +48,11 @@ SRC =	ft_strncmp.c\
 		ft_putnbr_fd.c\
 		ft_isascii.c\
 		ft_strlcpy.c \
-		ft_strchr.c\
 		ft_strrchr.c\
 		ft_isprint.c\
 		ft_strnstr.c\
 		ft_memmove.c\
-		ft_strtrim.c\
 		ft_itoa.c\
-		ft_strcmp.c\
 		ft_memdel.c\
 		ft_putendl.c\
 		ft_putstr.c\

@@ -134,18 +134,6 @@ int main(int argc, char **av)
     char        *table;
 	t_pars		pars;
 
-	printf("hello\n");
-	if (argc != 2)
-		display_error("Error\nCheking the arguments");
-	fd = open(av[1], O_RDONLY);
-    if (fd < 0)
-        display_error("Error in File Descriptor\n");
-	if (!check_extention(av[1]))
-		display_error("Error\nExtention");
-	if (ft_parsing(&pars, av))
-			return (1);
-	printf("%d", pars.len);
-
     table = read_file(fd);
     if (!table)
         display_error("Error in read File\n");

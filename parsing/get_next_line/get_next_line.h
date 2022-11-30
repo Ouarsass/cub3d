@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/09 03:02:00 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/23 19:02:26 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/11/28 21:32:44 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,12 @@
 #  define BUFFER_SIZE 42
 
 char	*ft_lecture(int fd, char *buffers);
-char	*ft_strchr(char *s, int c);
+char	*ft_strchr_my(char *s, int c);
 size_t	ft_strleen(char *s);
-char	*ft_strjoine(char *s1, char *s2);
+char	*ft_strjoineb(char *s1, char *s2);
 void	*ft_memcpy(void *dst, void *src, size_t n);
 char	*lire_ligne(char *buffers);
 char	*rest(char *buffers);
 char	*get_next_line(int fd);
-
 
 // #endif

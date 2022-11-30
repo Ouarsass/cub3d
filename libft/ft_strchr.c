@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strncmp.c                                       :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/11/22 21:04:17 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/28 23:02:51 by mouarsas         ###   ########.fr       */
+/*   Created: 2021/11/10 16:08:54 by mouarsas          #+#    #+#             */
+/*   Updated: 2022/11/28 19:37:43 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_strncmp(const char *s1, const char *s2, size_t n)
+char	*ft_strchr(char *s, int c)
 {
-	size_t	i;
-	unsigned char *arr1;
-	unsigned char *arr2;
+	int		i;
+	int		len;
+	char	*str;
 
 	i = 0;
-	arr1 = (unsigned char *)s1;
-	arr2 = (unsigned char *)s2;
-	if (n == 0)
-		return (0);
-	while (arr1[i] && arr2[i] && arr1[i] == arr2[i] && i < n - 1)
+	str = (char *)s;
+	len = ft_strlen(s);
+	while (i <= len)
+	{
+		if (str[i] == (char)c)
+		{
+			return (&str[i]);
+		}
 		i++;
-	return (arr1[i] - arr2[i]);
+	}
+	return (0);
 }
