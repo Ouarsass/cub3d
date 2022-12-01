@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/11/30 18:55:01 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/01 02:33:36 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,25 +55,24 @@ void	init(t_pars *texturs)
 	texturs->EA = NULL;
 }
 
-void	*stock_texturs(t_pars *text, char *spl)
+void	*stock_texturs(t_pars *text, char **spl)
 {
-	if (!ft_strcmp(spl, "NO") && text->NO == NULL)
-		text->NO = spl;
-	else 
-		return (printf("Error: duplicated1\n"), exit(1), NULL);
-	if (!ft_strcmp(spl, "SO") && text->SO == NULL)
-		text->SO = spl;
-	else
-		return (printf("Error: duplicated2\n"), exit(1), NULL);
-	if (!ft_strcmp(spl, "WE") && text->WE == NULL)
-		text->WE = spl;
-	else
-		return (printf("Error: duplicated3\n"), exit(1), NULL);
-	if (!ft_strcmp(spl, "EA") && text->EA == NULL)
-		text->EA = spl;
-	else
-		return (printf("Error: duplicated4\n"), exit(1), NULL);
-	// printf("-------%s\n", text->EA);
+	if (!ft_strcmp(spl[0], "NO") && text->NO == NULL)
+		text->NO = spl[1];
+	else if (!ft_strcmp(spl[0], "NO") && text->NO)
+		return (printf("Error: duplicated\n"), exit(1), NULL);
+	if (!ft_strcmp(spl[0], "SO") && text->SO == NULL)
+		text->SO = spl[1];
+	else if (!ft_strcmp(spl[0], "SO") && text->SO)
+		return (printf("Error: duplicated\n"), exit(1), NULL);
+	if (!ft_strcmp(spl[0], "WE") && text->WE == NULL)
+		text->WE = spl[1];
+	else if (!ft_strcmp(spl[0], "WE") && text->WE)
+		return (printf("Error: duplicated\n"), exit(1), NULL);
+	if (!ft_strcmp(spl[0], "EA") && text->EA == NULL)
+		text->EA = spl[1];
+	else if (!ft_strcmp(spl[0], "EA") && text->EA)
+		return (printf("Error: duplicated\n"), exit(1), NULL);
 	return (NULL);
 }
 
@@ -89,7 +88,8 @@ void	*check_texture(t_pars *text, char *map)
 	{
 		if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
 		{
-			stock_texturs(text, spl[0]);
+			stock_texturs(text, spl);
+			// check_C_and_F();
 			printf("in++++++++\n");
 		}
 		else if (spl[2])
@@ -122,15 +122,16 @@ int	ft_parsing(t_pars *pars, char **av)
 	free(line);
 	if (pars->len == 0)
 		return (printf("Error\nEmpty map"), 1);
-	pars->map = (char **)malloc(sizeof(char) * pars->len + 1);
+	pars->map = (char **)malloc(sizeof(char *) * pars->len + 1);
 	if (!pars->map)
 		return (printf("Error: map is not allocated\n"), 1);
 	fd = open(av[1], O_RDWR);
 	if (0 > fd)
 		return (1);
-	while (i < pars->len)
+	while (i < pars->len - 1)
 	{
 		pars->map[i] = get_next_line(fd);
+		printf("---->%s\n", pars->map[i]);
 		i++;
 	}
 	i = 0;
