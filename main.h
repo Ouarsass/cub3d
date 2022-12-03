@@ -19,6 +19,8 @@
 
 typedef	struct s_pars
 {
+	int		C;
+	int		F;
 	char	**map;
 	int		len;
     char	*NO;
