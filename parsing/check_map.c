@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/03 02:34:54 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/04 22:39:59 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,20 +78,37 @@ void	*stock_texturs(t_pars *text, char **spl)
 	return (NULL);
 }
 
-void	line_C_and_F(t_pars *map)
+int	ft_strsearch(char *str, char c)
 {
-	char 	**my_map;
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
+		i++;
+	}
+	return (0);
+}
+
+void	*line_C_and_F(t_pars *text, char **spl, char *map)
+{
 	int		i;
+	int		j;
 
 	i = -1;
-	my_map = map->map;
-	while (my_map[++i])
+	j = 0;
+	while (spl[++i])
 	{
-		if (!(ft_strcmp(my_map[i], "F") && ft_strcmp(my_map[i], "C")))
-		{
-			puts("here");
-		}
+		if (!ft_strsearch(spl[i], ',')) //////////// error
+			j++;
 	}
+	printf("%d\n", j);
+	if (j > 3)
+		return (printf("Error: in R.G.B colors"), exit(1), NULL);
+	// 10*256*256+100*256+15
+	return (NULL);
 }
 
 void	*check_C_and_F(t_pars *text, char *map)
@@ -101,17 +118,12 @@ void	*check_C_and_F(t_pars *text, char *map)
 	spl = ft_spl(map, ", \t\n\v\r");
 	if (!spl)
 		exit(1);
-	// if (i != 4 ) {
-	// 	puts("ERROR");
-	// 	exit(1);
-	// }
-	if (spl[0] && !ft_strcmp(spl[0], "F") && !ft_strcmp(spl[0], "C"))
-	{
-		
-	}
-	line_C_and_F(text); ///////////// provisior //////
+	if (spl[4])
+		return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
+	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
+		puts("---------------->");
+		line_C_and_F(text, spl, map); ///////////// provisior //////////////
 	return (NULL);
-	// 10*256*256+100*256+15
 }
 
 void	*check_texture(t_pars *text, char *map)
@@ -121,24 +133,29 @@ void	*check_texture(t_pars *text, char *map)
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
 		exit(1);
-	if (spl[0] && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
-		&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
-	{
-		if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+	if (ft_strleen(spl[0]) == 2 && text->map[0][0] != '1' && text->map[0][0] != '0')
+	{	
+		if (spl[0] && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
+			&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
 		{
-			stock_texturs(text, spl);
-			// printf("in++++++++\n");
+			if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+			{
+				stock_texturs(text, spl);
+				printf("in++++++++\n");
+			}
+			else if (spl[2])
+				return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
+			else
+				return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), NULL);
 		}
-		else if (spl[2])
-			return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
-		else
-			return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), NULL);
 	}
-	check_C_and_F(text, map);
-	
+	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
+	{
+			check_C_and_F(text, map);
+			puts("out");
+	}
 	return (NULL);
 }
-
 
 int	ft_parsing(t_pars *pars, char **av)
 {
