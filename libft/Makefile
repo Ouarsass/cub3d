@@ -6,7 +6,7 @@
 #    By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2021/11/11 23:09:21 by mouarsas          #+#    #+#              #
-#    Updated: 2022/12/04 21:00:13 by mouarsas         ###   ########.fr        #
+#    Updated: 2022/12/05 21:08:45 by mouarsas         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,9 +23,9 @@ SRC =	ft_strncmp.c\
 		ft_strtrim.c\
 		ft_strchr.c\
 		ft_strcmp.c\
+		ft_atoi.c \
 		# ft_tolower.c\
 		ft_toupper.c\
-		ft_atoi.c \
 		ft_putstr_fd.c\
 		ft_striteri.c\
 		ft_memset.c\

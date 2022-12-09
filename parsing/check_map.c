@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/04 22:39:59 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/09 23:25:53 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,6 +55,7 @@ void	init(t_pars *texturs)
 	texturs->EA = NULL;
 	texturs->C = 0;
 	texturs->F = 0;
+	texturs->only_map_len = 0;
 }
 
 void	*stock_texturs(t_pars *text, char **spl)
@@ -78,17 +79,21 @@ void	*stock_texturs(t_pars *text, char **spl)
 	return (NULL);
 }
 
-int	ft_strsearch(char *str, char c)
+int	ft_strsearch(char *str)
 {
 	int	i;
-
+	int ver = 0;
 	i = 0;
 	while (str[i])
 	{
-		if (str[i] == c)
-			return (1);
+		if (str[i] == ',')
+			ver++;
+		if(str[i + 1] && str[i] == ',' && str[i + 1] == ',')
+			return 1;
 		i++;
 	}
+	if(ver != 2)
+		return 1;
 	return (0);
 }
 
@@ -97,16 +102,17 @@ void	*line_C_and_F(t_pars *text, char **spl, char *map)
 	int		i;
 	int		j;
 
-	i = -1;
+	i = 0;
 	j = 0;
-	while (spl[++i])
-	{
-		if (!ft_strsearch(spl[i], ',')) //////////// error
-			j++;
-	}
-	printf("%d\n", j);
-	if (j > 3)
-		return (printf("Error: in R.G.B colors"), exit(1), NULL);
+	while (++i <= 3)
+		if (ft_atoi(spl[i]) < 0 || ft_atoi(spl[i]) > 255)
+			return (printf("Error; in R.G.B values"), exit(1), NULL);
+	if (ft_strsearch(map)) //////////// error
+		return (printf("Error; in R.G.B values22"), exit(1), NULL);
+		
+	// printf("%d\n", j);
+	// if (j > 3)
+	// 	return (printf("Error: in R.G.B colors"), exit(1), NULL);
 	// 10*256*256+100*256+15
 	return (NULL);
 }
@@ -120,41 +126,118 @@ void	*check_C_and_F(t_pars *text, char *map)
 		exit(1);
 	if (spl[4])
 		return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
-	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
-		puts("---------------->");
-		line_C_and_F(text, spl, map); ///////////// provisior //////////////
+	// if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
+	// puts("---------------->");
+	line_C_and_F(text, spl, map); ///////////// provisior //////////////
+	if (!ft_strcmp(spl[0], "C") && !text->C)
+		text->C = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
+	else if (!ft_strcmp(spl[0], "C") && text->C)
+		return (printf("Error: duplicate C color"), free_2d(spl), exit(1), NULL);
+	else if (!ft_strcmp(spl[0], "F") && !text->F)
+		text->F = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
+	else if (!ft_strcmp(spl[0], "F") && text->F)
+		return (printf("Error: duplicate F color"), free_2d(spl), exit(1), NULL);		
 	return (NULL);
 }
 
-void	*check_texture(t_pars *text, char *map)
+void	*parseMap(t_pars *stock, char *line_map, char **av)
+{
+	int		i;
+	int		fd;
+	char	*line;
+	int		k;
+	int		j;
+	char	*str;
+
+	i = 0;
+	fd = open(av[1], O_RDWR);
+	if (!fd)
+		return (exit(1), NULL);
+	line = get_next_line(fd);
+	// puts("here0000");
+	while (line)
+	{
+		stock->only_map_len++;
+		free(line);
+		line = get_next_line(fd);	
+	}
+	// printf("%d\n", stock->only_map_len);	
+	close(fd);
+	free(line);
+	if (stock->only_map_len == 0)
+		return (printf("Error\nEmpty only_map"), exit(1), NULL);
+	stock->only_map = (char **)malloc(sizeof(char *) * stock->only_map_len + 1);
+	if (!stock->only_map)
+		return (printf("Error: only_map is not allocated\n"), exit(1), NULL);
+	fd = open(av[1], O_RDWR);
+	if (0 > fd)
+		return (exit(1), NULL);
+	j = 0;
+	if (line_map[i] && (line_map[i] == '0' || line_map[i] == '1'))
+	{
+		i = 0;
+		while (i <= stock->only_map_len )
+		{	
+			str = get_next_line(fd);
+			if (str == NULL)
+				break;
+			if (ft_strncmp(str, "\n", 1) == 0 || ft_strncmp(str, "NO", 2) == 0 || 
+				ft_strncmp(str, "SO", 2) == 0 || ft_strncmp(str, "WE", 2) == 0 ||
+				ft_strncmp(str, "EA", 2) == 0 || ft_strncmp(str, "C", 1) == 0 || 
+				ft_strncmp(str, "F", 1) == 0 )
+				{
+					i++;
+					free(str);
+					continue;
+				}
+			// puts("here");
+			stock->only_map[j] = str;
+			i++;
+			j++;
+		}				
+	}
+		puts( "here\n");
+	stock->only_map[j] = NULL;	
+	k = 0;
+	while (stock->only_map[k] != NULL)
+	{
+		printf("%s",stock->only_map[k]);
+		k++;
+	}
+	return (0);
+}
+
+int	check_texture(t_pars *text, char *map, char **av)
 {
 	char **spl;
+	int i;
 
+	i = 0;
+	while (map[i] && (map[i] == ' ' || map[i] == '\t'))
+		i++;
+	if (map[i] && (map[i] == '0' || map[i] == '1'))
+		return (parseMap(text, &map[i], av), 1);
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
-		exit(1);
-	if (ft_strleen(spl[0]) == 2 && text->map[0][0] != '1' && text->map[0][0] != '0')
-	{	
-		if (spl[0] && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
-			&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
-		{
-			if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
-			{
-				stock_texturs(text, spl);
-				printf("in++++++++\n");
-			}
-			else if (spl[2])
-				return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
-			else
-				return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), NULL);
-		}
-	}
-	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
+		return (exit(1), 1);	
+	if (spl[0]  && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
+		&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
 	{
-			check_C_and_F(text, map);
-			puts("out");
+		if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+		{
+			stock_texturs(text, spl);
+			// puts("in---->>");
+		}
+		else if (spl[2])
+			return (printf("Error: in map"), free_2d(spl), exit(1), 1);
+		else
+			return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), 1);
 	}
-	return (NULL);
+	else if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
+		check_C_and_F(text, map);
+	else
+		return (2);
+	return (0);
 }
 
 int	ft_parsing(t_pars *pars, char **av)
@@ -162,6 +245,7 @@ int	ft_parsing(t_pars *pars, char **av)
 	int		fd;
 	char	*line;
 	int		i = 0;
+	int		res;
 
 	fd = open(av[1], O_RDWR);
 	if(fd < 0)
@@ -192,9 +276,10 @@ int	ft_parsing(t_pars *pars, char **av)
 	init(pars);
 	while (pars->map[++i])
 	{
-		check_texture(pars, pars->map[i]);
-			// printf("%s", pars->map[i]);
-			// return (1);
+		// printf("%s", pars->map[i]);
+		res = check_texture(pars, pars->map[i], av);
+		if (res == 2)
+			return(0);
 	}
 	return(0);
 }

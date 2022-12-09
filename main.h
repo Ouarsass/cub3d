@@ -21,12 +21,15 @@ typedef	struct s_pars
 {
 	int		C;
 	int		F;
-	char	**map;
+	int		only_map_len;
 	int		len;
+	char	**map;
+	char	**only_map;
     char	*NO;
     char	*SO;
     char	*WE;
     char	*EA;
+
 }			t_pars;
 
 typedef struct s_data
