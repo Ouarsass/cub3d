@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/09 23:25:53 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/10 01:19:09 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,8 +126,8 @@ void	*check_C_and_F(t_pars *text, char *map)
 		exit(1);
 	if (spl[4])
 		return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
-	// if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
-	// puts("---------------->");
+	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
+	puts("---------------->");
 	line_C_and_F(text, spl, map); ///////////// provisior //////////////
 	if (!ft_strcmp(spl[0], "C") && !text->C)
 		text->C = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
@@ -145,7 +145,6 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 	int		i;
 	int		fd;
 	char	*line;
-	int		k;
 	int		j;
 	char	*str;
 
@@ -196,9 +195,9 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 			j++;
 		}				
 	}
-		puts( "here\n");
-	stock->only_map[j] = NULL;	
-	k = 0;
+	stock->only_map[j] = NULL;
+	puts("\nhere\n");
+	int k = 0;
 	while (stock->only_map[k] != NULL)
 	{
 		printf("%s",stock->only_map[k]);
@@ -219,24 +218,27 @@ int	check_texture(t_pars *text, char *map, char **av)
 		return (parseMap(text, &map[i], av), 1);
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
-		return (exit(1), 1);	
-	if (spl[0]  && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
-		&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
+		return (exit(1), 1);
+	if (ft_strleen(spl[0]) == 2 && text->map[0][0] != '1' && text->map[0][0] != '0')
 	{
-		if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+		if (spl[0]  && !(ft_strcmp(spl[0], "NO") && ft_strcmp(spl[0], "SO") \
+			&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
 		{
-			stock_texturs(text, spl);
-			// puts("in---->>");
+			if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+			{
+				stock_texturs(text, spl);
+				puts("in---->>");
+			}
+			else if (spl[2])
+				return (printf("Error: in map"), free_2d(spl), exit(1), 1);
+			else
+				return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), 1);
 		}
-		else if (spl[2])
-			return (printf("Error: in map"), free_2d(spl), exit(1), 1);
-		else
-			return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), 1);
 	}
-	else if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
+	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
 		check_C_and_F(text, map);
-	else
-		return (2);
+	// else
+	// 	return (2);
 	return (0);
 }
 
