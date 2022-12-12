@@ -1,4 +1,4 @@
-NO          ./img/up.xpm
+NO   	./img/up.xpm    
 SO ./img/down.xpm
 WE          ./img/right.xpm
 EA ./img/left.xpm

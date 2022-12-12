@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/12 02:32:45 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/12 19:31:04 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,26 +148,26 @@ void	*check_map_first_and_last_line(t_pars *my_map)
 	int	j;
 
 	i = -1;
-	while (my_map->only_map[0][++i])
+	while (my_map->only_map[0][++i] != '\n')
 	{
-		printf("%c", my_map->only_map[0][i]);
+		// printf("%c", my_map->only_map[0][i]); /////////////////// last_update_here ////////////
 		if (my_map->only_map[0][i] != ' ' && my_map->only_map[0][i] != '1')
 			return (printf("Error: expected caracteres1"), free_2d(my_map->only_map), exit(1), NULL);
 	}
 	i = -1;
 	while (my_map->only_map[my_map->height - 1][++i])
+	{
 		if (my_map->only_map[my_map->height - 1][i] != ' ' && \
 			my_map->only_map[my_map->height - 1][i] != '1')
 			return (printf("Error: expected caracteres2"), free_2d(my_map->only_map), exit(1), NULL);
+	}
 	i = -1;
 	while (my_map->only_map[++i])
 	{
-		j = -1;
-		while (my_map->only_map[i][++j])
-		{
-			if (my_map->only_map[i][j] != ' ' && my_map->only_map[i][j] != '1')
-				return (printf("Error: expected caracteres3"), free_2d(my_map->only_map), exit(1), NULL);
-		}
+		char* trim = ft_strtrim(my_map->only_map[i], " \n");
+		if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1')
+			return (printf("Error: expected caracteres3"), free_2d(my_map->only_map), exit(1), NULL);
+		free(trim);
 	}
 	
 	
@@ -309,7 +309,6 @@ int	ft_parsing(t_pars *pars, char **av)
 	init(pars);
 	while (pars->map[++i])
 	{
-		// pars->height++;
 		res = check_texture(pars, pars->map[i], av); ////// here //////
 		if (res == 2)
 			return(0);
