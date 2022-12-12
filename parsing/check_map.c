@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/10 01:19:09 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/12 02:32:45 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,7 +107,7 @@ void	*line_C_and_F(t_pars *text, char **spl, char *map)
 	while (++i <= 3)
 		if (ft_atoi(spl[i]) < 0 || ft_atoi(spl[i]) > 255)
 			return (printf("Error; in R.G.B values"), exit(1), NULL);
-	if (ft_strsearch(map)) //////////// error
+	if (ft_strsearch(map)) //////////// error /////////////
 		return (printf("Error; in R.G.B values22"), exit(1), NULL);
 		
 	// printf("%d\n", j);
@@ -127,8 +127,10 @@ void	*check_C_and_F(t_pars *text, char *map)
 	if (spl[4])
 		return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
 	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
-	puts("---------------->");
-	line_C_and_F(text, spl, map); ///////////// provisior //////////////
+	{
+		line_C_and_F(text, spl, map); ///////////// provisior //////////////
+		puts("---------------->");
+	}
 	if (!ft_strcmp(spl[0], "C") && !text->C)
 		text->C = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
 	else if (!ft_strcmp(spl[0], "C") && text->C)
@@ -137,6 +139,38 @@ void	*check_C_and_F(t_pars *text, char *map)
 		text->F = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
 	else if (!ft_strcmp(spl[0], "F") && text->F)
 		return (printf("Error: duplicate F color"), free_2d(spl), exit(1), NULL);		
+	return (NULL);
+}
+
+void	*check_map_first_and_last_line(t_pars *my_map)
+{
+	int	i;
+	int	j;
+
+	i = -1;
+	while (my_map->only_map[0][++i])
+	{
+		printf("%c", my_map->only_map[0][i]);
+		if (my_map->only_map[0][i] != ' ' && my_map->only_map[0][i] != '1')
+			return (printf("Error: expected caracteres1"), free_2d(my_map->only_map), exit(1), NULL);
+	}
+	i = -1;
+	while (my_map->only_map[my_map->height - 1][++i])
+		if (my_map->only_map[my_map->height - 1][i] != ' ' && \
+			my_map->only_map[my_map->height - 1][i] != '1')
+			return (printf("Error: expected caracteres2"), free_2d(my_map->only_map), exit(1), NULL);
+	i = -1;
+	while (my_map->only_map[++i])
+	{
+		j = -1;
+		while (my_map->only_map[i][++j])
+		{
+			if (my_map->only_map[i][j] != ' ' && my_map->only_map[i][j] != '1')
+				return (printf("Error: expected caracteres3"), free_2d(my_map->only_map), exit(1), NULL);
+		}
+	}
+	
+	
 	return (NULL);
 }
 
@@ -153,14 +187,12 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 	if (!fd)
 		return (exit(1), NULL);
 	line = get_next_line(fd);
-	// puts("here0000");
 	while (line)
 	{
 		stock->only_map_len++;
 		free(line);
 		line = get_next_line(fd);	
 	}
-	// printf("%d\n", stock->only_map_len);	
 	close(fd);
 	free(line);
 	if (stock->only_map_len == 0)
@@ -176,7 +208,7 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 	{
 		i = 0;
 		while (i <= stock->only_map_len )
-		{	
+		{
 			str = get_next_line(fd);
 			if (str == NULL)
 				break;
@@ -184,26 +216,26 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 				ft_strncmp(str, "SO", 2) == 0 || ft_strncmp(str, "WE", 2) == 0 ||
 				ft_strncmp(str, "EA", 2) == 0 || ft_strncmp(str, "C", 1) == 0 || 
 				ft_strncmp(str, "F", 1) == 0 )
-				{
-					i++;
-					free(str);
-					continue;
-				}
-			// puts("here");
+			{
+				i++;
+				free(str);
+				continue;
+			}
 			stock->only_map[j] = str;
 			i++;
 			j++;
 		}				
 	}
 	stock->only_map[j] = NULL;
-	puts("\nhere\n");
-	int k = 0;
-	while (stock->only_map[k] != NULL)
-	{
-		printf("%s",stock->only_map[k]);
-		k++;
-	}
-	return (0);
+	stock->height = j;
+	// puts("map");
+	// int k = 0;
+	// while (stock->only_map[k] != NULL)
+	// {
+	// 	printf("%s",stock->only_map[k]);
+	// 	k++;
+	// }
+	return (NULL);
 }
 
 int	check_texture(t_pars *text, char *map, char **av)
@@ -215,7 +247,7 @@ int	check_texture(t_pars *text, char *map, char **av)
 	while (map[i] && (map[i] == ' ' || map[i] == '\t'))
 		i++;
 	if (map[i] && (map[i] == '0' || map[i] == '1'))
-		return (parseMap(text, &map[i], av), 1);
+		return (parseMap(text, &map[i], av), check_map_first_and_last_line(text), 1); ////////////////////////////////// here $$
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
 		return (exit(1), 1);
@@ -235,10 +267,9 @@ int	check_texture(t_pars *text, char *map, char **av)
 				return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), 1);
 		}
 	}
+	// else if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
 	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
 		check_C_and_F(text, map);
-	// else
-	// 	return (2);
 	return (0);
 }
 
@@ -278,8 +309,8 @@ int	ft_parsing(t_pars *pars, char **av)
 	init(pars);
 	while (pars->map[++i])
 	{
-		// printf("%s", pars->map[i]);
-		res = check_texture(pars, pars->map[i], av);
+		// pars->height++;
+		res = check_texture(pars, pars->map[i], av); ////// here //////
 		if (res == 2)
 			return(0);
 	}
@@ -301,4 +332,5 @@ int	main(int ac, char **av)
 		display_error("Error\nExtention");
 	if (ft_parsing(&pars, av))
 		return (1);
+	printf("%d\n", pars.height);
 }

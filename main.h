@@ -29,6 +29,7 @@ typedef	struct s_pars
     char	*SO;
     char	*WE;
     char	*EA;
+	int		height;
 
 }			t_pars;
 
