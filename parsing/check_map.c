@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/12 19:31:04 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/14 00:29:36 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,13 +107,8 @@ void	*line_C_and_F(t_pars *text, char **spl, char *map)
 	while (++i <= 3)
 		if (ft_atoi(spl[i]) < 0 || ft_atoi(spl[i]) > 255)
 			return (printf("Error; in R.G.B values"), exit(1), NULL);
-	if (ft_strsearch(map)) //////////// error /////////////
+	if (ft_strsearch(map))
 		return (printf("Error; in R.G.B values22"), exit(1), NULL);
-		
-	// printf("%d\n", j);
-	// if (j > 3)
-	// 	return (printf("Error: in R.G.B colors"), exit(1), NULL);
-	// 10*256*256+100*256+15
 	return (NULL);
 }
 
@@ -142,35 +137,63 @@ void	*check_C_and_F(t_pars *text, char *map)
 	return (NULL);
 }
 
-void	*check_map_first_and_last_line(t_pars *my_map)
+void	*check_middle_lines(t_pars *my_map)
 {
 	int	i;
 	int	j;
+	int nbr;
+	
+	i = -1;
+	nbr = 0;
+	while (my_map->only_map[++i])
+	{
+		j = 0;
+		while (my_map->only_map[i][j] && my_map->only_map[i][j] != '\n')
+		{
+			if (my_map->only_map[i][j] == 'N' || my_map->only_map[i][j] == 'S' || \
+				my_map->only_map[i][j] == 'E' || my_map->only_map[i][j] == 'W')
+				nbr++;
+			if (my_map->only_map[i][j] != ' ' && my_map->only_map[i][j] != '1')
+			{
+				if (my_map->only_map[i][j - 1] == ' ' || my_map->only_map[i][j + 1] == ' ')
+					return (printf("map not closed3"), free_2d(my_map->only_map), exit(1), NULL);
+				if (ft_strlen(my_map->only_map[i - 1]) - 1 <= j || ft_strlen(my_map->only_map[i + 1]) - 1 <= j)
+					return (printf("map not closed2"), free_2d(my_map->only_map), exit(1), NULL);
+				else if (my_map->only_map[i - 1][j] == ' ' || my_map->only_map[i + 1][j] == ' ')
+					return (printf("map not closed1"), free_2d(my_map->only_map), exit(1), NULL);
+			}
+			j++;
+		}
+	}
+	if (nbr != 1)
+		return (printf("nbr of players"), free_2d(my_map->only_map), exit(1), NULL);
+	return (NULL);
+}
+
+void	*first_and_last(t_pars *my_map)
+{
+	int		i;
+	int		j;
+	char	*trim;
 
 	i = -1;
 	while (my_map->only_map[0][++i] != '\n')
-	{
-		// printf("%c", my_map->only_map[0][i]); /////////////////// last_update_here ////////////
 		if (my_map->only_map[0][i] != ' ' && my_map->only_map[0][i] != '1')
-			return (printf("Error: expected caracteres1"), free_2d(my_map->only_map), exit(1), NULL);
-	}
+			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
 	i = -1;
 	while (my_map->only_map[my_map->height - 1][++i])
-	{
 		if (my_map->only_map[my_map->height - 1][i] != ' ' && \
 			my_map->only_map[my_map->height - 1][i] != '1')
-			return (printf("Error: expected caracteres2"), free_2d(my_map->only_map), exit(1), NULL);
-	}
+			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
 	i = -1;
 	while (my_map->only_map[++i])
 	{
-		char* trim = ft_strtrim(my_map->only_map[i], " \n");
+		trim = ft_strtrim(my_map->only_map[i], " \n");
 		if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1')
-			return (printf("Error: expected caracteres3"), free_2d(my_map->only_map), exit(1), NULL);
+			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
 		free(trim);
 	}
-	
-	
+	check_middle_lines(my_map);
 	return (NULL);
 }
 
@@ -247,7 +270,7 @@ int	check_texture(t_pars *text, char *map, char **av)
 	while (map[i] && (map[i] == ' ' || map[i] == '\t'))
 		i++;
 	if (map[i] && (map[i] == '0' || map[i] == '1'))
-		return (parseMap(text, &map[i], av), check_map_first_and_last_line(text), 1); ////////////////////////////////// here $$
+		return (parseMap(text, &map[i], av), first_and_last(text), 1); ////////////////////////////////// here $$
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
 		return (exit(1), 1);
