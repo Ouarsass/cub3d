@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/16 04:00:34 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/16 20:15:00 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -125,7 +125,7 @@ void	*check_C_and_F(t_pars *text, char *map)
 		return (printf("Error:\nin map"), free_2d(spl), exit(1), NULL);
 	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
 	{
-		line_C_and_F(text, spl, map); ///////////// provisior //////////////
+		line_C_and_F(text, spl, map); ///////////// provisior /////////////	
 		puts("---------------->");
 	}
 	if (!ft_strcmp(spl[0], "C") && !text->C)
@@ -137,7 +137,6 @@ void	*check_C_and_F(t_pars *text, char *map)
 	else if (!ft_strcmp(spl[0], "F") && text->F)
 		return (printf("Error:\nduplicate F color"), free_2d(spl), exit(1), NULL);
 	free_2d(spl);
-	free(map);
 	return (NULL);
 }
 
@@ -179,10 +178,7 @@ void	*first_and_last(t_pars *my_map)
 	int		i;
 	char	*trim;
 	i = -1;
-	// while (my_map->only_map[i] == NULL)
-		// i++;
-	// printf("%s\n", my_map->only_map[i]);
-	// exit(0);
+
 	while (my_map->only_map[0][++i] != '\n')
 		if (my_map->only_map[0][i] != ' ' && my_map->only_map[0][i] != '1')
 			return (printf("Error\nmap not closed"), \
@@ -267,9 +263,7 @@ void	*pars_Map_norm(t_pars *stock, char **av)
 		stock->only_map[j] = str;
 		i++;
 		j++;
-		// free(str);
 	}
-	// printf("%d\n", stock->only_map_len);
 	stock->only_map[j] = NULL;
 	stock->height = j;
 	return (NULL);
@@ -312,13 +306,11 @@ int	check_texture(t_pars *text, char *map, char **av)
 {
 	char **spl;
 	int i;
-
 	i = 0;
 	while (map[i] && (map[i] == ' ' || map[i] == '\t'))
 		i++;
 	if (map[i] && (map[i] == '0' || map[i] == '1'))
-		// return (pars_Map(text, &map[i], av), first_and_last(text), 1); ////////////////////////////////// here $$
-		return (first_and_last(text), 1); ////////////////////////////////// here $$
+		return (first_and_last(text), 1);
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
 		return (exit(1), 1);
@@ -328,7 +320,10 @@ int	check_texture(t_pars *text, char *map, char **av)
 			&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
 		{
 			if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
+			{
 				stock_texturs(text, spl);
+				puts("in++++++++>");
+			}
 			else if (spl[2])
 				return (printf("Error:\nin map"), free_2d(spl), exit(1), 1);
 			else
@@ -338,7 +333,6 @@ int	check_texture(t_pars *text, char *map, char **av)
 	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
 		check_C_and_F(text, map);
 	free_2d(spl);
-	puts("gjbjkg");
 	return (0);
 }
 
@@ -349,6 +343,7 @@ int	ft_parsing(t_pars *pars, char **av)
 	int		i;
 	int		res;
 	i = 0;
+	pars->len = 0;
 	fd = open(av[1], O_RDWR);
 	if(fd < 0)
 		return (1);
@@ -362,17 +357,18 @@ int	ft_parsing(t_pars *pars, char **av)
 	close(fd);
 	if (pars->len == 0)
 		return (printf("Error\nEmpty map"), 1);
-	pars->map = (char **)malloc(sizeof(char *) * pars->len + 1);
+	pars->map = (char **)malloc(sizeof(char *) * (pars->len + 1));
 	if (!pars->map)
 		return (printf("Error:\nmap is not allocated\n"), 1);
 	fd = open(av[1], O_RDWR);
 	if (0 > fd)
 		return (1);
-	while (i < pars->len - 1)
+	while (i + 1 < pars->len)
 	{
 		pars->map[i] = get_next_line(fd);
 		i++;
 	}
+	pars->map[i] = NULL;
 	i = -1;
 	init(pars);
 	int j = 0;
@@ -391,7 +387,8 @@ int	ft_parsing(t_pars *pars, char **av)
 	return(0);
 }
 
-int s(int ac , char **av) {
+int s(int ac , char **av) 
+{
 	int fd;
 	t_pars pars;
 
@@ -407,10 +404,6 @@ int s(int ac , char **av) {
 		return (1);
 	free_2d(pars.map);
 	free_2d(pars.only_map);
-	free(pars.EA);
-	free(pars.WE);
-	free(pars.NO);
-	free(pars.SO);
 	return (0);
 }
 
