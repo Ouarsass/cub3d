@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/30 00:42:02 by mouarsas          #+#    #+#             */
-/*   Updated: 2022/12/14 00:29:36 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/16 04:00:34 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,42 +58,44 @@ void	init(t_pars *texturs)
 	texturs->only_map_len = 0;
 }
 
-void	*stock_texturs(t_pars *text, char **spl)
+int stock_texturs(t_pars *text, char **spl)
 {
 	if (!ft_strcmp(spl[0], "NO") && text->NO == NULL)
 		text->NO = spl[1];
 	else if (!ft_strcmp(spl[0], "NO") && text->NO)
-		return (printf("Error: duplicated\n"), exit(1), NULL);
+		return (printf("Error:\nduplicated\n"), free_2d(spl), exit(1), -1);
 	if (!ft_strcmp(spl[0], "SO") && text->SO == NULL)
 		text->SO = spl[1];
 	else if (!ft_strcmp(spl[0], "SO") && text->SO)
-		return (printf("Error: duplicated\n"), exit(1), NULL);
+		return (printf("Error:\nduplicated\n"), free_2d(spl), exit(1), -1);
 	if (!ft_strcmp(spl[0], "WE") && text->WE == NULL)
 		text->WE = spl[1];
 	else if (!ft_strcmp(spl[0], "WE") && text->WE)
-		return (printf("Error: duplicated\n"), exit(1), NULL);
+		return (printf("Error:\nduplicated\n"), free_2d(spl), exit(1), -1);
 	if (!ft_strcmp(spl[0], "EA") && text->EA == NULL)
 		text->EA = spl[1];
 	else if (!ft_strcmp(spl[0], "EA") && text->EA)
-		return (printf("Error: duplicated\n"), exit(1), NULL);
-	return (NULL);
+		return (printf("Error:\nduplicated\n"), free_2d(spl), exit(1), -1);
+	return (1);
 }
 
 int	ft_strsearch(char *str)
 {
 	int	i;
-	int ver = 0;
+	int ver;
+
+	ver = 0;
 	i = 0;
 	while (str[i])
 	{
 		if (str[i] == ',')
 			ver++;
 		if(str[i + 1] && str[i] == ',' && str[i + 1] == ',')
-			return 1;
+			return (1);
 		i++;
 	}
 	if(ver != 2)
-		return 1;
+		return (1);
 	return (0);
 }
 
@@ -106,9 +108,9 @@ void	*line_C_and_F(t_pars *text, char **spl, char *map)
 	j = 0;
 	while (++i <= 3)
 		if (ft_atoi(spl[i]) < 0 || ft_atoi(spl[i]) > 255)
-			return (printf("Error; in R.G.B values"), exit(1), NULL);
+			return (printf("Error\nR.G.B values"), free_2d(spl), exit(1), NULL);
 	if (ft_strsearch(map))
-		return (printf("Error; in R.G.B values22"), exit(1), NULL);
+		return (printf("Error\nR.G.B sytax"), free_2d(spl), exit(1), NULL);
 	return (NULL);
 }
 
@@ -120,7 +122,7 @@ void	*check_C_and_F(t_pars *text, char *map)
 	if (!spl)
 		exit(1);
 	if (spl[4])
-		return (printf("Error: in map"), free_2d(spl), exit(1), NULL);
+		return (printf("Error:\nin map"), free_2d(spl), exit(1), NULL);
 	if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
 	{
 		line_C_and_F(text, spl, map); ///////////// provisior //////////////
@@ -129,11 +131,13 @@ void	*check_C_and_F(t_pars *text, char *map)
 	if (!ft_strcmp(spl[0], "C") && !text->C)
 		text->C = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
 	else if (!ft_strcmp(spl[0], "C") && text->C)
-		return (printf("Error: duplicate C color"), free_2d(spl), exit(1), NULL);
+		return (printf("Error:\nduplicate C color"), free_2d(spl), exit(1), NULL);
 	else if (!ft_strcmp(spl[0], "F") && !text->F)
 		text->F = (ft_atoi(spl[1]) << 16) + (ft_atoi(spl[2]) << 8) + (ft_atoi(spl[3]));
 	else if (!ft_strcmp(spl[0], "F") && text->F)
-		return (printf("Error: duplicate F color"), free_2d(spl), exit(1), NULL);		
+		return (printf("Error:\nduplicate F color"), free_2d(spl), exit(1), NULL);
+	free_2d(spl);
+	free(map);
 	return (NULL);
 }
 
@@ -156,59 +160,130 @@ void	*check_middle_lines(t_pars *my_map)
 			if (my_map->only_map[i][j] != ' ' && my_map->only_map[i][j] != '1')
 			{
 				if (my_map->only_map[i][j - 1] == ' ' || my_map->only_map[i][j + 1] == ' ')
-					return (printf("map not closed3"), free_2d(my_map->only_map), exit(1), NULL);
+					return (printf("Error\nmap not closed"), free_2d(my_map->only_map), exit(1), NULL);
 				if (ft_strlen(my_map->only_map[i - 1]) - 1 <= j || ft_strlen(my_map->only_map[i + 1]) - 1 <= j)
-					return (printf("map not closed2"), free_2d(my_map->only_map), exit(1), NULL);
+					return (printf("Error\nmap not closed"), free_2d(my_map->only_map), exit(1), NULL);
 				else if (my_map->only_map[i - 1][j] == ' ' || my_map->only_map[i + 1][j] == ' ')
-					return (printf("map not closed1"), free_2d(my_map->only_map), exit(1), NULL);
+					return (printf("Error\nmap not closed"), free_2d(my_map->only_map), exit(1), NULL);
 			}
 			j++;
 		}
 	}
 	if (nbr != 1)
-		return (printf("nbr of players"), free_2d(my_map->only_map), exit(1), NULL);
+		return (printf("Error\nnbr of players"), free_2d(my_map->only_map), exit(1), NULL);
 	return (NULL);
 }
 
 void	*first_and_last(t_pars *my_map)
 {
 	int		i;
-	int		j;
 	char	*trim;
-
 	i = -1;
+	// while (my_map->only_map[i] == NULL)
+		// i++;
+	// printf("%s\n", my_map->only_map[i]);
+	// exit(0);
 	while (my_map->only_map[0][++i] != '\n')
 		if (my_map->only_map[0][i] != ' ' && my_map->only_map[0][i] != '1')
-			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
+			return (printf("Error\nmap not closed"), \
+				free_2d(my_map->only_map), exit(1), NULL);
 	i = -1;
 	while (my_map->only_map[my_map->height - 1][++i])
 		if (my_map->only_map[my_map->height - 1][i] != ' ' && \
 			my_map->only_map[my_map->height - 1][i] != '1')
-			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
+			return (printf("Error\nmap not closed"), \
+				free_2d(my_map->only_map), exit(1), NULL);
 	i = -1;
 	while (my_map->only_map[++i])
 	{
 		trim = ft_strtrim(my_map->only_map[i], " \n");
 		if (trim[0] != '1' || trim[ft_strlen(trim) - 1] != '1')
-			return (printf("Error"), free_2d(my_map->only_map), exit(1), NULL);
+			return (printf("Error\nmap not closed"), \
+				free(trim), free_2d(my_map->only_map), exit(1), NULL);
 		free(trim);
 	}
+	// printf("%p\n", trim);
 	check_middle_lines(my_map);
 	return (NULL);
 }
 
-void	*parseMap(t_pars *stock, char *line_map, char **av)
+// void	*pars_Map_norm_again(t_pars *stock, int *j, int *i, char **av)
+// {
+// 	int		fd;
+// 	char	*str;
+
+// 	fd = open(av[1], O_RDWR);
+// 	if (0 > fd)
+// 		return (printf("Error\n file discriptor"), exit(1), NULL);
+// 	while (*i <= stock->only_map_len )
+// 	{
+// 		str = get_next_line(fd);
+// 		if (str == NULL)
+// 			break;
+// 		if (ft_strncmp(str, "\n", 1) == 0 || ft_strncmp(str, "NO", 2) == 0 || 
+// 			ft_strncmp(str, "SO", 2) == 0 || ft_strncmp(str, "WE", 2) == 0 ||
+// 			ft_strncmp(str, "EA", 2) == 0 || ft_strncmp(str, "C", 1) == 0 || 
+// 			ft_strncmp(str, "F", 1) == 0 )
+// 		{
+// 			(*i)++;
+// 			free(str);
+// 			continue;
+// 		}
+// 		stock->only_map[*j] = str;
+// 		(*i)++;
+// 		(*j)++;
+// 	}				
+// 	stock->only_map[*j] = NULL;
+// 	stock->height = *j;
+// 	return (NULL);
+// }
+
+void	*pars_Map_norm(t_pars *stock, char **av)
 {
+	int		fd;
+	int		j;
 	int		i;
+	char	*str;
+	i = 0;
+	j = 0;
+	fd = open(av[1], O_RDWR);
+	if (0 > fd)
+		return (printf("Error\n file discriptor"), exit(1), NULL);
+	while (i <= stock->only_map_len )
+	{
+		// pars_Map_norm_again(stock, &j, &i, av);
+		str = get_next_line(fd);
+		if (str == NULL)
+			break;
+		if (ft_strncmp(str, "\n", 1) == 0 || ft_strncmp(str, "NO", 2) == 0 || 
+			ft_strncmp(str, "SO", 2) == 0 || ft_strncmp(str, "WE", 2) == 0 ||
+			ft_strncmp(str, "EA", 2) == 0 || ft_strncmp(str, "C", 1) == 0 || 
+			ft_strncmp(str, "F", 1) == 0 )
+		{
+			i++;
+			free(str);
+			continue;
+		}
+		stock->only_map[j] = str;
+		i++;
+		j++;
+		// free(str);
+	}
+	// printf("%d\n", stock->only_map_len);
+	stock->only_map[j] = NULL;
+	stock->height = j;
+	return (NULL);
+}
+
+void	*pars_Map(t_pars *stock, char **av)
+{
 	int		fd;
 	char	*line;
-	int		j;
 	char	*str;
 
-	i = 0;
 	fd = open(av[1], O_RDWR);
 	if (!fd)
-		return (exit(1), NULL);
+		return (printf("Error\n file discriptor"), exit(1), NULL);
 	line = get_next_line(fd);
 	while (line)
 	{
@@ -222,36 +297,8 @@ void	*parseMap(t_pars *stock, char *line_map, char **av)
 		return (printf("Error\nEmpty only_map"), exit(1), NULL);
 	stock->only_map = (char **)malloc(sizeof(char *) * stock->only_map_len + 1);
 	if (!stock->only_map)
-		return (printf("Error: only_map is not allocated\n"), exit(1), NULL);
-	fd = open(av[1], O_RDWR);
-	if (0 > fd)
-		return (exit(1), NULL);
-	j = 0;
-	if (line_map[i] && (line_map[i] == '0' || line_map[i] == '1'))
-	{
-		i = 0;
-		while (i <= stock->only_map_len )
-		{
-			str = get_next_line(fd);
-			if (str == NULL)
-				break;
-			if (ft_strncmp(str, "\n", 1) == 0 || ft_strncmp(str, "NO", 2) == 0 || 
-				ft_strncmp(str, "SO", 2) == 0 || ft_strncmp(str, "WE", 2) == 0 ||
-				ft_strncmp(str, "EA", 2) == 0 || ft_strncmp(str, "C", 1) == 0 || 
-				ft_strncmp(str, "F", 1) == 0 )
-			{
-				i++;
-				free(str);
-				continue;
-			}
-			stock->only_map[j] = str;
-			i++;
-			j++;
-		}				
-	}
-	stock->only_map[j] = NULL;
-	stock->height = j;
-	// puts("map");
+		return (printf("Error:\nonly_map is not allocated\n"), exit(1), NULL);
+	pars_Map_norm(stock, av);
 	// int k = 0;
 	// while (stock->only_map[k] != NULL)
 	// {
@@ -270,7 +317,8 @@ int	check_texture(t_pars *text, char *map, char **av)
 	while (map[i] && (map[i] == ' ' || map[i] == '\t'))
 		i++;
 	if (map[i] && (map[i] == '0' || map[i] == '1'))
-		return (parseMap(text, &map[i], av), first_and_last(text), 1); ////////////////////////////////// here $$
+		// return (pars_Map(text, &map[i], av), first_and_last(text), 1); ////////////////////////////////// here $$
+		return (first_and_last(text), 1); ////////////////////////////////// here $$
 	spl = ft_spl(map, " \n\t\v\r");
 	if (!spl)
 		return (exit(1), 1);
@@ -280,19 +328,17 @@ int	check_texture(t_pars *text, char *map, char **av)
 			&& ft_strcmp(spl[0], "WE") && ft_strcmp(spl[0], "EA")))
 		{
 			if(spl[1] && !spl[2] && !ft_strncmp((spl[1] + ft_strlen(spl[1]) - 4), ".xpm", 4))
-			{
 				stock_texturs(text, spl);
-				puts("in---->>");
-			}
 			else if (spl[2])
-				return (printf("Error: in map"), free_2d(spl), exit(1), 1);
+				return (printf("Error:\nin map"), free_2d(spl), exit(1), 1);
 			else
-				return (printf("Error: file is not extension '.xpm'"), free_2d(spl), exit(1), 1);
+				return (printf("Error:\nfile is not extension '.xpm'"), free_2d(spl), exit(1), 1);
 		}
 	}
-	// else if (spl[0] && !(ft_strcmp(spl[0], "F") && ft_strcmp(spl[0], "C")))
 	else if (ft_strleen(spl[0]) == 1 && text->map[0][0] != '0' && text->map[0][0] != '1')
 		check_C_and_F(text, map);
+	free_2d(spl);
+	puts("gjbjkg");
 	return (0);
 }
 
@@ -300,9 +346,9 @@ int	ft_parsing(t_pars *pars, char **av)
 {
 	int		fd;
 	char	*line;
-	int		i = 0;
+	int		i;
 	int		res;
-
+	i = 0;
 	fd = open(av[1], O_RDWR);
 	if(fd < 0)
 		return (1);
@@ -314,12 +360,11 @@ int	ft_parsing(t_pars *pars, char **av)
 		line = get_next_line(fd);
 	}
 	close(fd);
-	free(line);
 	if (pars->len == 0)
 		return (printf("Error\nEmpty map"), 1);
 	pars->map = (char **)malloc(sizeof(char *) * pars->len + 1);
 	if (!pars->map)
-		return (printf("Error: map is not allocated\n"), 1);
+		return (printf("Error:\nmap is not allocated\n"), 1);
 	fd = open(av[1], O_RDWR);
 	if (0 > fd)
 		return (1);
@@ -330,17 +375,23 @@ int	ft_parsing(t_pars *pars, char **av)
 	}
 	i = -1;
 	init(pars);
+	int j = 0;
 	while (pars->map[++i])
 	{
-		res = check_texture(pars, pars->map[i], av); ////// here //////
-		if (res == 2)
-			return(0);
+		j = 0;
+		while( (pars->map[i][j] == ' ' || pars->map[i][j] == '\t'))
+				j++;
+		if (pars->map[i][j] == '1' || pars->map[i][j] == '0')
+			break;
 	}
+	pars_Map(pars, av);
+	i = -1;
+	while (pars->map[++i])
+		check_texture(pars, pars->map[i], av);
 	return(0);
 }
 
-int	main(int ac, char **av)
-{
+int s(int ac , char **av) {
 	int fd;
 	t_pars pars;
 
@@ -348,11 +399,23 @@ int	main(int ac, char **av)
 		return (printf("Error\nCheking the arguments"), 1);
 	fd = open(av[1], O_RDWR);
 	if (fd < 0)
-		return (printf("Error: in File Descriptor"), 1);
+		return (printf("Error\nin File Descriptor"), 1);
 	close(fd);
 	if (check_extention(av[1]))
 		display_error("Error\nExtention");
 	if (ft_parsing(&pars, av))
 		return (1);
-	printf("%d\n", pars.height);
+	free_2d(pars.map);
+	free_2d(pars.only_map);
+	free(pars.EA);
+	free(pars.WE);
+	free(pars.NO);
+	free(pars.SO);
+	return (0);
+}
+
+int	main(int ac, char **av)
+{
+	s(ac, av);
+	system("leaks a.out");
 }

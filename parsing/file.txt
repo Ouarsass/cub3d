@@ -1,0 +1,43 @@
+Process:         a.out [17068]
+Path:            /Volumes/VOLUME/*/a.out
+Load Address:    0x10b3f7000
+Identifier:      a.out
+Version:         ???
+Code Type:       X86-64
+Parent Process:  zsh [2197]
+
+Date/Time:       2022-12-16 02:40:52.417 +0100
+Launch Time:     2022-12-16 02:40:52.142 +0100
+OS Version:      Mac OS X 10.14.6 (18G9323)
+Report Version:  7
+Analysis Tool:   /Applications/Xcode.app/Contents/Developer/usr/bin/leaks
+Analysis Tool Version:  Xcode 11.3.1 (11C505)
+----
+
+leaks Report Version: 4.0
+Process 17068: 802 nodes malloced for 112 KB
+Process 17068: 13 leaks for 304 total leaked bytes.
+
+    13 (304 bytes) << TOTAL >>
+
+      3 (64 bytes) ROOT LEAK: 0x7fb72ad0e4f0 [32]
+         1 (16 bytes) 0x7fb72ad02dd0 [16]  length: 9  "5,220,255"
+         1 (16 bytes) 0x7fb72ad0b190 [16]  length: 1  "C"
+
+      2 (48 bytes) ROOT LEAK: 0x7fb72ad0e3b0 [32]
+         1 (16 bytes) 0x7fb72ad0e3d0 [16]  length: 2  "SO"
+
+      2 (48 bytes) ROOT LEAK: 0x7fb72ad0e460 [32]
+         1 (16 bytes) 0x7fb72ad0e4a0 [16]  length: 2  "NO"
+
+      2 (48 bytes) ROOT LEAK: 0x7fb72ad0e4b0 [32]
+         1 (16 bytes) 0x7fb72ad029f0 [16]  length: 2  "WE"
+
+      2 (48 bytes) ROOT LEAK: 0x7fb72ad0e4d0 [32]
+         1 (16 bytes) 0x7fb72ad03620 [16]  length: 2  "EA"
+
+      1 (32 bytes) ROOT LEAK: 0x7fb72ad0e510 [32]
+      1 (16 bytes) ROOT LEAK: 0x7fb72ad035a0 [16]
+
+---------------->
+---------------->
