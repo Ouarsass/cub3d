@@ -18,11 +18,30 @@ int has_collision(t_game *game, float x, float y, char num)
         return (TRUE);
     map_x = x / game->map.tile_size;
     map_y = y / game->map.tile_size;
-    if (game->map.my_map[map_y][map_x] == num)
+	// printf("[%d,%d]\n", map_y, map_x);
+    if (game->map.my_map[map_y] && (ft_strlen(game->map.my_map[map_y]) > (size_t)map_x && (size_t)map_x >= 0) && game->map.my_map[map_y][map_x] && game->map.my_map[map_y][map_x] == num)
         ret = TRUE;
     else
         ret = FALSE;
     return (ret);
+}
+
+int wall_collection(t_game *game, float x, float y, char num)
+{
+	float map_x;
+	float map_y;
+
+	map_x = x / game->map.tile_size;
+	map_y = y / game->map.tile_size;
+	if (game->map.my_map[(int)(map_y + 0.2)][(int)(map_x)] == num)
+		return(TRUE);
+	if (game->map.my_map[(int)(map_y - 0.2)][(int)(map_x)] == num)
+		return(TRUE);
+	if (game->map.my_map[(int)(map_y)][(int)(map_x + 0.2)] == num)
+		return(TRUE);
+	if (game->map.my_map[(int)(map_y)][(int)(map_x - 0.2)] == num)
+		return(TRUE);
+	return (FALSE);
 }
 
 void move(t_game *game)
@@ -38,14 +57,14 @@ void move(t_game *game)
     side_step = game->player.walkDirection_side * game->player.walkSpeed;
     newPlayerX = game->player.x + cos(game->player.rotationAngle) * moveStep;
     newPlayerY = game->player.y + sin(game->player.rotationAngle) * moveStep;
-    if (!has_collision(game, newPlayerX, newPlayerY, '1'))
+    if (!has_collision(game, newPlayerX, newPlayerY, '1') && !wall_collection(game, newPlayerX, newPlayerY, '1'))
     {
         game->player.x = newPlayerX;
         game->player.y = newPlayerY;
     }
     newPlayerX = game->player.x + cos(game->player.rotationAngle + 0.5 * PI) * side_step;
     newPlayerY = game->player.y + sin(game->player. rotationAngle + 0.5 * PI) * side_step;
-    if (!has_collision(game, newPlayerX, newPlayerY, '1'))
+    if (!has_collision(game, newPlayerX, newPlayerY, '1') && !wall_collection(game, newPlayerX, newPlayerY, '1'))
     {
         game->player.x = newPlayerX;
         game->player.y = newPlayerY;
