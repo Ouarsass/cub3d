@@ -6,7 +6,7 @@
 /*   By: mouarsas <mouarsas@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/24 17:02:04 by odakhch           #+#    #+#             */
-/*   Updated: 2022/12/26 23:14:40 by mouarsas         ###   ########.fr       */
+/*   Updated: 2022/12/28 16:25:37 by mouarsas         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -213,7 +213,7 @@ void	chose_tile_size(t_game *game, t_text *text);
 int		check_extention(char *av);
 int		ft_parsing(t_map *pars, char **av);
 char	**ft_spl(char *str, char *spl);
-int		ft_parsing_frist(t_game *game, int ac, char **av);
+int		ft_parsing_frist(t_game *game, char **av);
 void	free_2d(char **tab);
 void	*pars_map(t_map *stock, char **av);
 int		ft_error_fd(int fd);
